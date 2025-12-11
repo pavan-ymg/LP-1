@@ -1,0 +1,160 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
+
+/* Global */
+* {
+    font-family: "Poppins", sans-serif;
+}
+
+/* Logo */
+img.logomain {
+    width: 30%;
+}
+
+/* Navigation */
+.main-nav {
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(12px);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    z-index: 50;
+    transition: 0.3s ease;
+}
+
+.nav-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 0;
+}
+
+.nav-menu {
+    display: flex;
+    gap: 32px;
+}
+
+.nav-link {
+    text-decoration: none;
+    color: #374151;
+    font-weight: 500;
+    position: relative;
+}
+
+.nav-link:hover {
+    color: #d97706;
+}
+
+.nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: #f59e0b;
+    transition: width 0.3s ease;
+}
+
+.nav-link:hover::after {
+    width: 100%;
+}
+
+/* Mobile Menu */
+.mobile-menu-btn {
+    display: none;
+    flex-direction: column;
+    cursor: pointer;
+    gap: 5px;
+}
+
+.mobile-menu-btn span {
+    width: 25px;
+    height: 3px;
+    background: #374151;
+}
+
+/* Services background */
+#services {
+    background: linear-gradient(135deg, #f8fafc, #e0f2fe);
+}
+
+/* Sticky Left Section */
+.left-section {
+    position: sticky;
+    top: 20px;
+}
+
+/* Form Wrapper */
+.form-wrapper {
+    border-radius: 20px;
+    background: white;
+    padding: 32px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+}
+
+/* Stat Cards */
+.stat-card {
+    background: white;
+    padding: 32px;
+    border-radius: 24px;
+    box-shadow: 0 15px 50px rgba(0, 0, 0, 0.1);
+    border: 1px solid #f3f4f6;
+    text-align: center;
+}
+
+/* Hero Overlay */
+.hero-overlay {
+    min-height: 85vh;
+    display: flex;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.55);
+    backdrop-filter: blur(2px);
+}
+
+/* Footer */
+.footer {
+    background: #0f172a;
+    color: white;
+    padding: 64px 0;
+}
+
+/* -------------------------
+   Responsive Styles
+---------------------------*/
+@media (max-width: 992px) {
+    .left-section {
+        position: static;
+    }
+}
+
+@media (max-width: 768px) {
+
+    img.logomain {
+        width: 100% !important;
+    }
+
+    .nav-menu {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: rgba(255, 255, 255, 0.95);
+        flex-direction: column;
+        max-height: 0;
+        overflow: hidden;
+        transition: 0.4s ease;
+    }
+
+    .nav-menu.active {
+        max-height: 400px;
+        padding: 15px 0;
+    }
+
+    .nav-link {
+        padding: 12px 20px;
+        width: 100%;
+        display: block;
+    }
+
+    .mobile-menu-btn {
+        display: flex;
+    }
+}
