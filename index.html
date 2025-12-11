@@ -19,18 +19,28 @@
 
 <body>
 
+  <a href="tel:4244471147" class="floating-call-icon">
+    📞
+  </a>
 
   <!-- ================= NAVBAR (Logo Only) ================= -->
 
-  <nav class="main-nav" id="mainNav">
-    <div class="container">
-      <div class="nav-content">
-        <div style="width: 50%;">
-          <img src="https://www.ymg-legal.com/logo.png" alt="YMG Legal" class="logomain">
-        </div>
-      </div>
+  <nav class="main-nav fixed-top" id="mainNav">
+    <div class="container d-flex justify-content-between align-items-center py-2">
+
+      <!-- Logo -->
+      <a href="/" class="d-block">
+        <img src="https://www.ymg-legal.com/logo.png" alt="YMG Legal" class="logomain" style="max-height: 55px;">
+      </a>
+
+      <!-- Call Button -->
+      <a href="tel:4244471147" class="nav-call-btn">
+        📞 424-447-1147
+      </a>
+
     </div>
   </nav>
+
 
   <!-- ================== SECTION 1: HERO ================== -->
 
@@ -357,13 +367,25 @@
                     required></textarea>
                 </div>
 
+                <!-- OPT-IN CONSENT (place above the submit button) -->
+                <div class="mb-3 form-check">
+                  <input class="form-check-input" type="checkbox" value="1" id="consent" name="consent" required>
+                  <label class="form-check-label" for="consent" style="font-size:0.95rem;">
+                    I agree to receive calls, emails, and text messages from YMG Legal and its partners at the contact
+                    information I provide, including my wireless number. I understand these messages may be sent using
+                    automated technology, and consent is not required to receive services.
+                  </label>
+                  <div class="form-text text-muted" style="margin-top:6px; font-size:0.85rem;">
+                    You can withdraw consent anytime by contacting us.
+                  </div>
+                </div>
+
+
                 <button type="button" class="btn btn-warning btn-lg w-100 fw-bold" onclick="showStep(2)">
                   Continue →
                 </button>
 
               </div>
-
-
 
 
               <!-- Step 2 -->
@@ -394,6 +416,20 @@
                   <input id="email" type="email" class="form-control form-control-lg" name="email" required>
                 </div>
 
+                <!-- OPT-IN CONSENT (place above the submit button) -->
+                <div class="mb-3 form-check">
+                  <input class="form-check-input" type="checkbox" value="1" id="consent" name="consent" required>
+                  <label class="form-check-label" for="consent" style="font-size:0.95rem;">
+                    I agree to receive calls, emails, and text messages from YMG Legal and its partners at the contact
+                    information I provide, including my wireless number. I understand these messages may be sent using
+                    automated technology, and consent is not required to receive services.
+                  </label>
+                  <div class="form-text text-muted" style="margin-top:6px; font-size:0.85rem;">
+                    You can withdraw consent anytime by contacting us.
+                  </div>
+                </div>
+
+
                 <button type="submit" class="btn btn-success btn-lg w-100 fw-bold">
                   Get My Claim Value →
                 </button>
@@ -413,32 +449,33 @@
   <!-- STATS -->
   <section id="stats" class="py-5" style="background:#0f172a; color:white;">
     <div class="container text-center">
-      <h2 class="fw-bold display-5 mb-4">Our Impact in Numbers</h2>
+      <h2 class="fw-bold display-5 mb-4">Your Case, Backed by Proven Legal Partners</h2>
 
       <div class="row g-4">
         <div class="col-md-4">
           <div class="stat-card p-5" style="background:#1e293b;">
             <h2 class="fw-bold"><span class="counter" data-target="1000">0</span>+</h2>
-            <p>Cases Resolved</p>
+            <p>People Connected to Trusted Attorneys</p>
           </div>
         </div>
 
         <div class="col-md-4">
           <div class="stat-card p-5" style="background:#1e293b;">
             <h2 class="fw-bold">$<span class="counter" data-target="50">0</span>M+</h2>
-            <p>Recovered for Clients</p>
+            <p>Settlements Secured by Our Legal Partners</p>
           </div>
         </div>
 
         <div class="col-md-4">
           <div class="stat-card p-5" style="background:#1e293b;">
             <h2 class="fw-bold"><span class="counter" data-target="500">0</span>+</h2>
-            <p>5-Star Reviews</p>
+            <p>Positive Reviews for Referred Attorneys</p>
           </div>
         </div>
       </div>
     </div>
   </section>
+
 
 
   <!-- PRACTICE AREAS -->
