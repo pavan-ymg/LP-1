@@ -19,25 +19,34 @@
 
 <body>
 
-  <a href="tel:4244471147" class="floating-call-icon">
-    📞
+  <a href="tel:+14244471147" class="floating-call-btn" onclick="window.location.href='tel:+14244471147'">
+    <svg width="20" height="20" viewBox="0 0 24 24" style="vertical-align:middle;margin-right:8px;">
+      <path
+        d="M22 16.92v3a2 2 0 0 1-2.18 2 19.86 19.86 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.86 19.86 0 0 1 3.07 4.18 2 2 0 0 1 5 2h3a2 2 0 0 1 2 1.72c.12 1.05.39 2.07.8 3.03a2 2 0 0 1-.45 2.11L9.91 10.9a15.05 15.05 0 0 0 6 6l1.04-1.04a2 2 0 0 1 2.11-.45c.96.41 1.98.68 3.03.8A2 2 0 0 1 22 16.92z"
+        fill="#000000" />
+    </svg>
+    Call Now
   </a>
 
   <!-- ================= NAVBAR (Logo Only) ================= -->
 
   <nav class="main-nav fixed-top" id="mainNav">
     <div class="container d-flex justify-content-between align-items-center py-2">
-
-      <!-- Logo -->
-      <a href="/" class="d-block">
-        <img src="https://www.ymg-legal.com/logo.png" alt="YMG Legal" class="logomain" style="max-height: 55px;">
+      <a href="/" class="d-block" style="width: 50%;">
+        <img src="https://www.ymg-legal.com/logo.png" alt="YMG Legal" class="logomain" style="max-height:55px;">
       </a>
 
-      <!-- Call Button -->
-      <a href="tel:4244471147" class="nav-call-btn">
-        📞 424-447-1147
+      <!-- Navbar Call Button -->
+      <a href="tel:+14244471147" class="nav-call-btn" onclick="window.location.href='tel:+14244471147'">
+        <!-- green phone SVG + number -->
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
+          style="vertical-align:middle;margin-right:8px;">
+          <path
+            d="M22 16.92v3a2 2 0 0 1-2.18 2 19.86 19.86 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.86 19.86 0 0 1 3.07 4.18 2 2 0 0 1 5 2h3a2 2 0 0 1 2 1.72c.12 1.05.39 2.07.8 3.03a2 2 0 0 1-.45 2.11L9.91 10.9a15.05 15.05 0 0 0 6 6l1.04-1.04a2 2 0 0 1 2.11-.45c.96.41 1.98.68 3.03.8A2 2 0 0 1 22 16.92z"
+            fill="#000000" />
+        </svg>
+        424-447-1147
       </a>
-
     </div>
   </nav>
 
@@ -90,25 +99,19 @@
           <div>
             <h2 class="fw-bold mb-3">Why Choose YMG Legal?</h2>
             <p class="text-secondary mb-4">
-              At YMG Legal, we fight aggressively to ensure accident victims receive the compensation
-              they deserve. With years of experience and thousands of successful claims, we make the
-              process fast, stress-free, and with zero upfront fees.
+              Choose YMG Legal for personalized legal support, risk-free representation and a commitment to securing the
+              best possible compensation you deserve
             </p>
 
             <div class="mb-3">
-              <h5 class="fw-semibold">✔ 24/7 Case Support</h5>
-              <p class="text-secondary">Always available to discuss your case.</p>
+              <p class="fw-semibold">✔ Proven Track Record</p>
+              <p class="fw-semibold">✔ Specialized in Motor Vehicle accident.</p>
+              <p class="fw-semibold">✔ Available 24/7</p>
+              <p class="fw-semibold">✔ No Win, No Fee</p>
+              <p class="fw-semibold">✔ Nationwide Coverage</p>
+              <p class="fw-semibold">✔ Fully Confidential</p>
             </div>
 
-            <div class="mb-3">
-              <h5 class="fw-semibold">✔ Max Settlement Strategy</h5>
-              <p class="text-secondary">We negotiate to get you the highest payout possible.</p>
-            </div>
-
-            <div class="mb-3">
-              <h5 class="fw-semibold">✔ No Win, No Fee Guarantee</h5>
-              <p class="text-secondary">You pay nothing unless we win your case.</p>
-            </div>
           </div>
 
           <div class="mt-5">
@@ -454,7 +457,7 @@
       <div class="row g-4">
         <div class="col-md-4">
           <div class="stat-card p-5" style="background:#1e293b;">
-            <h2 class="fw-bold"><span class="counter" data-target="1000">0</span>+</h2>
+            <h2 class="fw-bold"><span class="counter" data-target="150">0</span>k+</h2>
             <p>People Connected to Trusted Attorneys</p>
           </div>
         </div>
@@ -468,8 +471,8 @@
 
         <div class="col-md-4">
           <div class="stat-card p-5" style="background:#1e293b;">
-            <h2 class="fw-bold"><span class="counter" data-target="500">0</span>+</h2>
-            <p>Positive Reviews for Referred Attorneys</p>
+            <h2 class="fw-bold"><span class="counter" data-target="98">0</span>%</h2>
+            <p>Matched with the right attorney</p>
           </div>
         </div>
       </div>
@@ -558,6 +561,13 @@
 
 
   <script>
+
+    document.querySelectorAll('a[href^="tel:"]').forEach(a => {
+      a.addEventListener('click', function (e) {
+        setTimeout(() => { window.location.href = this.getAttribute('href'); }, 200);
+      });
+    });
+
     /* ------------------------------
        Smooth Scroll
     ------------------------------ */

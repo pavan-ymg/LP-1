@@ -1,28 +1,95 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
 
-.floating-call-icon {
+.main-nav {
+    background: #fff;
+    z-index: 9999;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+}
+
+.nav-call-btn {
+    background: #ecfdf5;
+    color: #065f46;
+    padding: 8px 14px;
+    border-radius: 28px;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    text-decoration: none;
+    gap: 6px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.12);
+}
+
+.nav-call-btn:hover {
+    transform: translateY(-2px);
+}
+
+.floating-call-btn {
     position: fixed;
     bottom: 20px;
     right: 20px;
-    background: #f59e0b;
-    color: #000;
-    width: 60px;
-    height: 60px;
-    border-radius: 50%;
+    background: #ffc107;
+    color: #000000;
+    padding: 14px 18px;
+    font-weight: 700;
+    border-radius: 999px;
+    box-shadow: 0 6px 18px rgba(4, 120, 87, 0.25);
+    text-decoration: none;
+    font-size: 15px;
+    z-index: 10000;
     display: flex;
     align-items: center;
-    justify-content: center;
-    font-size: 26px;
-    font-weight: bold;
-    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.25);
-    text-decoration: none;
-    z-index: 9999;
-    transition: transform 0.2s ease;
 }
 
-.floating-call-icon:hover {
-    transform: scale(1.1);
+.floating-call-btn svg {
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.12));
 }
+
+.floating-call-btn:hover {
+    transform: scale(1.03);
+}
+
+.nav-call-btn:hover,
+.floating-call-btn:hover,
+.nav-call-btn:focus,
+.floating-call-btn:focus {
+    color: black !important;
+}
+
+
+
+/* Make navbar fixed */
+.main-nav {
+    background: #ffffff;
+    width: 100%;
+    z-index: 9999;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+}
+
+/* Call button */
+.nav-call-btn {
+    background: #ffc107;
+    /* amber */
+    color: #000;
+    padding: 10px 18px;
+    border-radius: 30px;
+    font-weight: 600;
+    text-decoration: none;
+    font-size: 16px;
+    box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.15);
+    transition: 0.2s ease;
+}
+
+.nav-call-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.2);
+}
+
+/* Space for fixed navbar */
+body {
+    padding-top: 60px;
+    /* adjusts page so content doesn’t hide under navbar */
+}
+
 
 
 /* Global */
