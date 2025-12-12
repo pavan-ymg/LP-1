@@ -15,7 +15,6 @@ document.querySelectorAll('a[href^="tel:"]').forEach(a => {
 ----------------------------------------- */
 document.querySelectorAll('a[href^="#"]').forEach(link => {
     link.addEventListener("click", function (e) {
-
         const target = document.querySelector(this.getAttribute("href"));
 
         // If it's a modal trigger — DO NOT smooth scroll
@@ -65,18 +64,7 @@ window.addEventListener('scroll', () => {
 /* -----------------------------------------
    4. Success Animation Modal
 ----------------------------------------- */
-// function showSuccessAnimation() {
-//     const el = document.getElementById("successAnimation");
-//     el.classList.add("active");
-
-//     setTimeout(() => {
-//         el.classList.remove("active");
-//     }, 2200);
-// }
-
-
 function showSuccessAnimation(form) {
-
     // If this is the modal form → close modal BEFORE animation
     if (form.id === "modalClaimForm") {
         const modal = bootstrap.Modal.getInstance(document.getElementById("claimModal"));
@@ -106,13 +94,33 @@ function showSuccessAnimation(form) {
 }
 
 
-/* GOOGLE FORM SUBMISSION HANDLER */
+/* -----------------------------------------
+   5. GOOGLE FORM SUBMISSION HANDLER (UPDATED)
+----------------------------------------- */
 function setupFormSubmission(formId) {
     const form = document.getElementById(formId);
     if (!form) return;
 
     form.addEventListener("submit", async (e) => {
         e.preventDefault();
+
+        // Validate form
+        if (!form.checkValidity()) {
+            form.reportValidity();
+            return;
+        }
+
+        // Get submit button and save original state
+        const submitBtn = form.querySelector('button[type="submit"]');
+        const originalText = submitBtn.textContent;
+        const originalHTML = submitBtn.innerHTML;
+        
+        // Set loading state
+        submitBtn.innerHTML = `
+            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+            Submitting...
+        `;
+        submitBtn.disabled = true;
 
         const data = new FormData();
 
@@ -123,10 +131,16 @@ function setupFormSubmission(formId) {
         data.append("entry.1555922417", form.ambulance.value);
         data.append("entry.1275153243", form.emergencyRoom.value);
 
-        // Injuries[] (checkboxes)
-        form.querySelectorAll("input[name='injuries[]']:checked").forEach(cb => {
-            data.append("entry.2067095679", cb.value);
-        });
+        // Injuries[] (checkboxes) - handle both forms
+        const injuryCheckboxes = form.querySelectorAll("input[name='injuries[]']:checked");
+        if (injuryCheckboxes.length > 0) {
+            injuryCheckboxes.forEach(cb => {
+                data.append("entry.2067095679", cb.value);
+            });
+        } else {
+            // If no injuries checked, send empty value
+            data.append("entry.2067095679", "");
+        }
 
         data.append("entry.1513166168", form.attorneyHelp.value);
         data.append("entry.706026317", form.propertyDamage.value);
@@ -141,32 +155,57 @@ function setupFormSubmission(formId) {
         data.append("entry.100931319", form.phone.value);
         data.append("entry.1965612719", form.email.value);
 
-        const googleURL =
-            "https://docs.google.com/forms/d/e/1FAIpQLScLGGD6vA1gy17t_Nue4vJUkhisJnmRpvfl3JL-vdxjegsjeQ/formResponse";
+        // Consent checkbox
+        const consentCheckbox = form.querySelector('#consent');
+        if (consentCheckbox) {
+            data.append("entry.000000001", consentCheckbox.checked ? "Yes" : "No");
+        }
+
+        const googleURL = "https://docs.google.com/forms/d/e/1FAIpQLScLGGD6vA1gy17t_Nue4vJUkhisJnmRpvfl3JL-vdxjegsjeQ/formResponse";
 
         try {
+            // Submit to Google Forms
             await fetch(googleURL, {
                 method: "POST",
                 body: data,
                 mode: "no-cors",
             });
 
-            showSuccessAnimation(); // your animation
+            // Show success animation
+            showSuccessAnimation(form);
 
-            form.reset();
+            // Log for debugging (remove in production)
+            console.log(`Form ${formId} submitted successfully`);
 
         } catch (error) {
             console.error("Google Form Submission Error:", error);
-            alert("Something went wrong. Please try again.");
+            
+            // Show user-friendly error
+            alert("We're having trouble submitting your form. Please try again in a moment, or call us directly at (424) 447-1147.");
+            
+            // Restore button immediately on error
+            submitBtn.innerHTML = originalHTML;
+            submitBtn.disabled = false;
+            return;
         }
+
+        // Restore button after success (with delay)
+        setTimeout(() => {
+            submitBtn.innerHTML = originalHTML;
+            submitBtn.disabled = false;
+        }, 2500);
     });
 }
 
-setupFormSubmission("claimForm");
-setupFormSubmission("modalClaimForm");
+// Initialize both forms
+document.addEventListener('DOMContentLoaded', () => {
+    setupFormSubmission("claimForm");
+    setupFormSubmission("modalClaimForm");
+});
+
 
 /* -----------------------------------------
-   6. Injuries — Show/Hide “Other” Field
+   6. Injuries — Show/Hide "Other" Field
 ----------------------------------------- */
 const injOther = document.getElementById("injOther");
 const injOtherText = document.getElementById("injOtherText");
@@ -181,5 +220,97 @@ if (injOther && injOtherText) {
             injOtherText.required = false;
             injOtherText.value = "";
         }
+    });
+}
+
+
+/* -----------------------------------------
+   7. FORM VALIDATION HELPERS
+----------------------------------------- */
+function validateForm(form) {
+    // Check all required fields
+    const requiredFields = form.querySelectorAll('[required]');
+    let isValid = true;
+    
+    requiredFields.forEach(field => {
+        if (!field.value.trim()) {
+            field.classList.add('is-invalid');
+            isValid = false;
+        } else {
+            field.classList.remove('is-invalid');
+        }
+    });
+    
+    return isValid;
+}
+
+// Add validation styling
+document.addEventListener('DOMContentLoaded', () => {
+    // Add validation listeners to all forms
+    document.querySelectorAll('form').forEach(form => {
+        form.addEventListener('input', (e) => {
+            if (e.target.hasAttribute('required')) {
+                if (e.target.value.trim()) {
+                    e.target.classList.remove('is-invalid');
+                }
+            }
+        });
+        
+        form.addEventListener('change', (e) => {
+            if (e.target.hasAttribute('required')) {
+                if (e.target.value.trim()) {
+                    e.target.classList.remove('is-invalid');
+                }
+            }
+        });
+    });
+});
+
+
+/* -----------------------------------------
+   8. DEBUG MODE (Optional - enable for testing)
+----------------------------------------- */
+const DEBUG_MODE = false; // Set to true to enable debugging
+
+if (DEBUG_MODE) {
+    // Test Google Form connection
+    async function testGoogleFormConnection() {
+        console.log("Testing Google Form connection...");
+        
+        const testData = new FormData();
+        testData.append("entry.376735095", "Test First");
+        testData.append("entry.1038562843", "Test Last");
+        testData.append("entry.100931319", "555-555-5555");
+        testData.append("entry.1965612719", "test@example.com");
+        testData.append("entry.471263482", "2024-01-01");
+        testData.append("entry.2147185536", "no");
+        testData.append("entry.735364438", "yes");
+        testData.append("entry.1555922417", "yes");
+        testData.append("entry.1275153243", "yes");
+        testData.append("entry.2067095679", "Whiplash");
+        testData.append("entry.1513166168", "no");
+        testData.append("entry.706026317", "minor");
+        testData.append("entry.508102148", "CA");
+        testData.append("entry.1429171366", "Los Angeles");
+        testData.append("entry.682378800", "personal");
+        testData.append("entry.770407118", "Test description");
+        
+        try {
+            const response = await fetch("https://docs.google.com/forms/d/e/1FAIpQLScLGGD6vA1gy17t_Nue4vJUkhisJnmRpvfl3JL-vdxjegsjeQ/formResponse", {
+                method: "POST",
+                body: testData,
+                mode: "no-cors"
+            });
+            console.log("✓ Test submission sent successfully");
+            console.log("Note: With 'no-cors' mode, we can't see the response");
+            console.log("Check your Google Form responses to verify receipt");
+        } catch (error) {
+            console.error("✗ Test failed:", error);
+        }
+    }
+    
+    // Run test when page loads
+    window.addEventListener('load', () => {
+        setTimeout(testGoogleFormConnection, 1000);
     });
 }
