@@ -1,138 +1,180 @@
-/* ------------------------------
-   TEL LINKS (Fix click delay)
------------------------------- */
-document.querySelectorAll('a[href^="tel:"]').forEach(a => {
-    a.addEventListener('click', function (e) {
-        setTimeout(() => { window.location.href = this.getAttribute('href'); }, 200);
+document.addEventListener('DOMContentLoaded', () => {
+
+  /* ------------------------------
+    Helpers
+    ------------------------------ */
+  const GOOGLE_FORM_URL = "https://docs.google.com/forms/d/e/1FAIpQLSeMwW3ummNim_Uo_ja2LhZyM0RU9GuecekGtfjAH5-R9lmzFw/formResponse";
+
+    function buildFormData(form) {
+    const fd = new FormData();
+
+    // Step 1 fields
+    fd.append("entry.542115974", form.querySelector("[name='dateIncident']")?.value || "");
+    fd.append("entry.1967796353", form.querySelector("[name='fault']")?.value || "");
+    fd.append("entry.1194857749", form.querySelector("[name='injured']")?.value || "");
+    fd.append("entry.1758807391", form.querySelector("[name='ambulance']")?.value || "");
+    fd.append("entry.1708161178", form.querySelector("[name='emergencyRoom']")?.value || "");
+
+    // injuries[] checkboxes
+    form.querySelectorAll("input[name='injuries[]']:checked").forEach(cb => {
+      if (cb.value) fd.append("entry.568188935", cb.value);
     });
-});
 
-/* ------------------------------
-   Smooth Scroll
------------------------------- */
-document.querySelectorAll('a[href^="#"]').forEach(link => {
-    link.addEventListener("click", function (e) {
-        const target = document.querySelector(this.getAttribute("href"));
+    // include Other text if present
+    const otherField = form.querySelector("[name='injuriesOther']");
+    if (otherField && otherField.value.trim()) {
+        fd.append("entry.568188935", otherField.value.trim());
+    }
 
-        // Prevent breaking modal triggers
-        if (!target) return;
+    fd.append("entry.1285187423", form.querySelector("[name='attorneyHelp']")?.value || "");
+    fd.append("entry.1774776280", form.querySelector("[name='caseDescription']")?.value || "");
+    fd.append("entry.1829424868", form.querySelector("[name='vehicleType']")?.value || "");
+    fd.append("entry.1456507434", form.querySelector("[name='state']")?.value || "");
+    fd.append("entry.2083390486", form.querySelector("[name='city']")?.value || "");
 
-        e.preventDefault();
-        target.scrollIntoView({ behavior: "smooth" });
-    });
-});
+    // Step 2 fields
+    fd.append("entry.223127181", form.querySelector("[name='firstName']")?.value || "");
+    fd.append("entry.889533505", form.querySelector("[name='lastName']")?.value || "");
+    fd.append("entry.1238482112", form.querySelector("[name='phone']")?.value || "");
+    fd.append("entry.942245524", form.querySelector("[name='email']")?.value || "");
 
-/* ------------------------------
-   Counter Animation
------------------------------- */
-const counters = document.querySelectorAll('.counter');
-const speed = 80;
+    return fd;
+  }
 
-const runCounter = () => {
-    counters.forEach(counter => {
-        const updateCount = () => {
-            const target = +counter.getAttribute('data-target');
-            const count = +counter.innerText;
-            const inc = target / speed;
+    function showSuccessAnimationFor(form) {
+    const success = document.getElementById("successAnimation");
+    if (!success) return;
+    // Hide form & show animation
+    form.classList.add("d-none");
+    success.classList.remove("d-none");
 
-            if (count < target) {
-                counter.innerText = Math.ceil(count + inc);
-                setTimeout(updateCount, 20);
-            } else {
-                counter.innerText = target;
+    // restore after delay
+    setTimeout(() => {
+        success.classList.add("d-none");
+    form.classList.remove("d-none");
+    // reset to step1 if multi-step
+    if (form.id === "claimFormMain") showStepMain(1);
+    if (form.id === "claimFormModal") showModalStep(1);
+    form.reset();
+    }, 3200);
+  }
+
+    async function postToGoogle(form, submitBtn) {
+    try {
+      const fd = buildFormData(form);
+    // disable submit button
+    if (submitBtn) {submitBtn.disabled = true; submitBtn.classList.add('disabled'); }
+
+    await fetch(GOOGLE_FORM_URL, {method: "POST", body: fd, mode: "no-cors" });
+
+    // success UI
+    showSuccessAnimationFor(form);
+
+    // If modal form, close modal after small delay
+    if (form.id === "claimFormModal") {
+        setTimeout(() => {
+            const modalEl = document.getElementById('claimModal');
+            if (modalEl) {
+                const bsModal = bootstrap.Modal.getInstance(modalEl) || new bootstrap.Modal(modalEl);
+                bsModal.hide();
             }
-        };
-        updateCount();
-    });
-};
+        }, 800);
+      }
 
-// Trigger counters when #stats enters viewport
-let started = false;
-window.addEventListener('scroll', () => {
-    const statsSection = document.querySelector('#stats');
-    if (statsSection && !started && window.scrollY > statsSection.offsetTop - window.innerHeight + 200) {
-        runCounter();
-        started = true;
+    } catch (err) {
+        console.error("Submission error:", err);
+    alert("Something went wrong. Please try again.");
+    } finally {
+      if (submitBtn) {submitBtn.disabled = false; submitBtn.classList.remove('disabled'); }
     }
-});
+  }
 
-/* ------------------------------
-   Multi-Step Form Logic
------------------------------- */
-function showStep(step) {
-    document.querySelectorAll('.step').forEach(s => s.classList.add('d-none'));
-    document.getElementById('step' + step).classList.remove('d-none');
+    /* ------------------------------
+       Other injury toggles
+    ------------------------------ */
+    function setupOtherToggle(checkboxId, inputId) {
+    const cb = document.getElementById(checkboxId);
+    const input = document.getElementById(inputId);
+    if (!cb || !input) return;
+    cb.addEventListener('change', () => {
+      if (cb.checked) {
+        input.classList.remove('d-none');
+    input.required = true;
+      } else {
+        input.classList.add('d-none');
+    input.required = false;
+    input.value = '';
+      }
+    });
+  }
+    setupOtherToggle('injOther', 'injOtherText');
+    setupOtherToggle('injOtherModal', 'injOtherTextModal');
 
+    /* ------------------------------
+       Multi-step: MAIN form
+    ------------------------------ */
+    function showStepMain(step) {
+        document.querySelectorAll('#claimFormMain .step').forEach(s => s.classList.add('d-none'));
+    const el = document.getElementById('step' + step);
+    if (el) el.classList.remove('d-none');
     const wrapper = document.querySelector('.form-wrapper');
-    if (wrapper) {
-        window.scrollTo({
-            top: wrapper.offsetTop - 60,
-            behavior: "smooth"
-        });
-    }
-}
+    if (wrapper) window.scrollTo({top: wrapper.offsetTop - 60, behavior: 'smooth' });
+  }
+    window.showStepMain = showStepMain;
 
-window.showStep = showStep;
+    // attach Continue button inside main step1 if exists
+    const mainContinue = document.querySelector('#claimFormMain [onclick="showStep(2)"], #claimFormMain .btn-continue-main');
+    if (mainContinue) {
+        mainContinue.addEventListener('click', (e) => { e.preventDefault(); showStepMain(2); });
+  }
 
-/* ------------------------------
-   GOOGLE FORM SUBMISSION
------------------------------- */
-const claimForm = document.getElementById("claimForm");
+    /* ------------------------------
+       Multi-step: MODAL form
+    ------------------------------ */
+    function showModalStep(step) {
+        document.querySelectorAll('#claimModal .step').forEach(s => s.classList.add('d-none'));
+    const el = document.getElementById('modalStep' + step);
+    if (el) el.classList.remove('d-none');
+    // keep modal scrolled to top of modal body
+    const modalBody = document.querySelector('#claimModal .modal-body');
+    if (modalBody) modalBody.scrollTop = 0;
+  }
+    window.showModalStep = showModalStep;
 
-if (claimForm) {
-    claimForm.addEventListener("submit", function (e) {
+    // attach Continue button inside modal step1
+    const modalContinue = document.querySelector('#claimFormModal [onclick="showModalStep(2)"], #claimFormModal .btn-continue-modal');
+    if (modalContinue) {
+        modalContinue.addEventListener('click', (e) => { e.preventDefault(); showModalStep(2); });
+  }
+
+    /* ------------------------------
+       Attach submission handlers
+    ------------------------------ */
+    function attachFormHandler(formId) {
+    const form = document.getElementById(formId);
+    if (!form) return;
+
+    form.addEventListener('submit', function (e) {
         e.preventDefault();
-
-        const form = e.target;
-        const data = new FormData();
-
-        // Step 1 fields
-        data.append("entry.542115974", form.dateIncident.value);
-        data.append("entry.1967796353", form.fault.value);
-        data.append("entry.1194857749", form.injured.value);
-        data.append("entry.1758807391", form.ambulance.value);
-        data.append("entry.1708161178", form.emergencyRoom.value);
-
-        document.querySelectorAll("input[name='injuries[]']:checked").forEach(cb => {
-            data.append("entry.568188935", cb.value);
-        });
-
-        data.append("entry.1285187423", form.attorneyHelp.value);
-        data.append("entry.1774776280", form.caseDescription.value);
-        data.append("entry.1829424868", form.vehicleType.value);
-
-        data.append("entry.1456507434", form.state.value);
-        data.append("entry.2083390486", form.city.value);
-
-        // Step 2 fields
-        data.append("entry.223127181", form.firstName.value);
-        data.append("entry.889533505", form.lastName.value);
-        data.append("entry.1238482112", form.phone.value);
-        data.append("entry.942245524", form.email.value);
-
-        // Google Forms POST endpoint
-        const googleFormURL =
-            "https://docs.google.com/forms/d/e/1FAIpQLSeMwW3ummNim_Uo_ja2LhZyM0RU9GuecekGtfjAH5-R9lmzFw/viewform";
-
-        fetch(googleFormURL, {
-            method: "POST",
-            body: data,
-            mode: "no-cors"
-        })
-            .then(() => {
-                alert("Your claim has been submitted successfully!");
-                form.reset();
-                showStep(1);
-            })
-            .catch(err => {
-                console.error("Submission Error:", err);
-                alert("Something went wrong. Please try again.");
-            });
+    // find submit button inside this form (last button of type submit)
+    const submitBtn = form.querySelector('button[type="submit"]') || form.querySelector('.btn-submit');
+    postToGoogle(form, submitBtn);
     });
-}
+  }
 
+    attachFormHandler('claimFormMain');
+    attachFormHandler('claimFormModal');
 
-function showModalStep(step) {
-    document.querySelectorAll('#claimModal .step').forEach(s => s.classList.add('d-none'));
-    document.getElementById('modalStep' + step).classList.remove('d-none');
-}
+    /* ------------------------------
+       Small extras: tel links and smooth anchors already loaded earlier,
+       but ensure bootstrap modal resets to step1 when opened
+    ------------------------------ */
+    const claimModalEl = document.getElementById('claimModal');
+    if (claimModalEl) {
+        claimModalEl.addEventListener('shown.bs.modal', () => {
+            // reset modal to step1
+            showModalStep(1);
+        });
+  }
+
+});

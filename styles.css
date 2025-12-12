@@ -29,7 +29,7 @@
     right: 20px;
     background: #ffc107;
     color: #000000;
-    padding: 14px 18px; 
+    padding: 14px 18px;
     font-weight: 700;
     border-radius: 999px;
     box-shadow: 0 6px 18px rgba(4, 120, 87, 0.25);
@@ -54,7 +54,7 @@
 .floating-call-btn:focus {
     color: black !important;
 }
- 
+
 
 
 /* Make navbar fixed */
@@ -88,6 +88,51 @@
 body {
     padding-top: 60px;
     /* adjusts page so content doesn’t hide under navbar */
+}
+
+
+.success-wrapper {
+    text-align: center;
+    padding: 30px 0;
+}
+
+.checkmark-circle {
+    width: 120px;
+    height: 120px;
+    position: relative;
+    display: inline-block;
+}
+
+.checkmark-circle .background {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    background: #28a745;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.checkmark {
+    width: 60px;
+    height: 30px;
+    border-left: 8px solid white;
+    border-bottom: 8px solid white;
+    transform: rotate(-45deg);
+    position: absolute;
+    top: 35px;
+    left: 30px;
+    opacity: 0;
+}
+
+.checkmark.draw {
+    animation: draw 0.6s ease forwards 0.3s;
+}
+
+@keyframes draw {
+    to {
+        opacity: 1;
+    }
 }
 
 
