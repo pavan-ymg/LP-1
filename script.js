@@ -65,85 +65,105 @@ window.addEventListener('scroll', () => {
 /* -----------------------------------------
    4. Success Animation Modal
 ----------------------------------------- */
-function showSuccessAnimation() {
-    const el = document.getElementById("successAnimation");
-    el.classList.add("active");
+// function showSuccessAnimation() {
+//     const el = document.getElementById("successAnimation");
+//     el.classList.add("active");
+
+//     setTimeout(() => {
+//         el.classList.remove("active");
+//     }, 2200);
+// }
+
+
+function showSuccessAnimation(form) {
+
+    // If this is the modal form → close modal BEFORE animation
+    if (form.id === "modalClaimForm") {
+        const modal = bootstrap.Modal.getInstance(document.getElementById("claimModal"));
+        if (modal) modal.hide();
+
+        // Delay so modal backdrop disappears, then show animation
+        setTimeout(() => {
+            document.getElementById("successAnimation").classList.add("active");
+        }, 400);
+
+        setTimeout(() => {
+            document.getElementById("successAnimation").classList.remove("active");
+        }, 2400);
+
+        form.reset();
+        return;
+    }
+
+    // MAIN FORM (normal)
+    document.getElementById("successAnimation").classList.add("active");
 
     setTimeout(() => {
-        el.classList.remove("active");
-    }, 2200);
+        document.getElementById("successAnimation").classList.remove("active");
+    }, 2400);
+
+    form.reset();
 }
 
-/* -----------------------------------------
-   5. Generic Form Submission Handler
------------------------------------------ */
 
+/* GOOGLE FORM SUBMISSION HANDLER */
 function setupFormSubmission(formId) {
     const form = document.getElementById(formId);
     if (!form) return;
 
-    form.addEventListener("submit", async function (e) {
+    form.addEventListener("submit", async (e) => {
         e.preventDefault();
 
         const data = new FormData();
 
-        /* -------------------------
-           MAP FIELDS TO GOOGLE FORM
-        ------------------------- */
+        // Map fields to Google Form entry IDs
+        data.append("entry.471263482", form.dateIncident.value);
+        data.append("entry.2147185536", form.fault.value);
+        data.append("entry.735364438", form.injured.value);
+        data.append("entry.1555922417", form.ambulance.value);
+        data.append("entry.1275153243", form.emergencyRoom.value);
 
-        data.append("entry.542115974", form.dateIncident.value);
-        data.append("entry.1967796353", form.fault.value);
-        data.append("entry.1194857749", form.injured.value);
-        data.append("entry.1758807391", form.ambulance.value);
-        data.append("entry.1708161178", form.emergencyRoom.value);
+        // Injuries[] (checkboxes)
+        form.querySelectorAll("input[name='injuries[]']:checked").forEach(cb => {
+            data.append("entry.2067095679", cb.value);
+        });
 
-        // Injuries (checkboxes)
-        document.querySelectorAll(`#${formId} input[name='injuries[]']:checked`)
-            .forEach(cb => data.append("entry.568188935", cb.value));
-
-        data.append("entry.1285187423", form.attorneyHelp.value);
-        data.append("entry.1774776280", form.caseDescription.value);
-        data.append("entry.1829424868", form.vehicleType.value);
-
-        data.append("entry.1456507434", form.state.value);
-        data.append("entry.2083390486", form.city.value);
+        data.append("entry.1513166168", form.attorneyHelp.value);
+        data.append("entry.706026317", form.propertyDamage.value);
+        data.append("entry.508102148", form.state.value);
+        data.append("entry.1429171366", form.city.value);
+        data.append("entry.682378800", form.vehicleType.value);
+        data.append("entry.770407118", form.caseDescription.value);
 
         // Contact info
-        data.append("entry.223127181", form.firstName.value);
-        data.append("entry.889533505", form.lastName.value);
-        data.append("entry.1238482112", form.phone.value);
-        data.append("entry.942245524", form.email.value);
-
-        // Consent Checkbox
-        data.append("entry.1410461071", form.consent.checked ? "Yes" : "No");
-
-        /* -------------------------
-           GOOGLE FORM ENDPOINT
-        ------------------------- */
+        data.append("entry.376735095", form.firstName.value);
+        data.append("entry.1038562843", form.lastName.value);
+        data.append("entry.100931319", form.phone.value);
+        data.append("entry.1965612719", form.email.value);
 
         const googleURL =
-            "https://docs.google.com/forms/d/e/1FAIpQLSeMwW3ummNim_Uo_ja2LhZyM0RU9GuecekGtfjAH5-R9lmzFw/formResponse";
+            "https://docs.google.com/forms/d/e/1FAIpQLScLGGD6vA1gy17t_Nue4vJUkhisJnmRpvfl3JL-vdxjegsjeQ/formResponse";
 
         try {
             await fetch(googleURL, {
                 method: "POST",
                 body: data,
-                mode: "no-cors"
+                mode: "no-cors",
             });
 
-            showSuccessAnimation(form);
+            showSuccessAnimation(); // your animation
 
-        } catch (err) {
-            console.error("FORM ERROR:", err);
+            form.reset();
+
+        } catch (error) {
+            console.error("Google Form Submission Error:", error);
             alert("Something went wrong. Please try again.");
         }
     });
 }
 
-/* Apply submission logic to BOTH forms */
 setupFormSubmission("claimForm");
 setupFormSubmission("modalClaimForm");
-
 
 /* -----------------------------------------
    6. Injuries — Show/Hide “Other” Field
