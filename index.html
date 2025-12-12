@@ -20,7 +20,7 @@
 </head>
 
 <body>
-
+  <!-- call btn -->
   <a href="tel:+14244471147" class="floating-call-btn" onclick="window.location.href='tel:+14244471147'">
     <svg width="20" height="20" viewBox="0 0 24 24" style="vertical-align:middle;margin-right:8px;">
       <path
@@ -31,7 +31,6 @@
   </a>
 
   <!-- ================= NAVBAR (Logo Only) ================= -->
-
   <nav class="main-nav fixed-top" id="mainNav">
     <div class="container d-flex justify-content-between align-items-center py-2">
       <a href="/" class="d-block" style="width: 50%;">
@@ -52,9 +51,7 @@
     </div>
   </nav>
 
-
   <!-- ================== SECTION 1: HERO ================== -->
-
   <section id="home" class="py-5" style="
     position: relative;
     background-image: url('https://images.pexels.com/photos/5668473/pexels-photo-5668473.jpeg?auto=compress&cs=tinysrgb&w=1920&h=1080&fit=crop');
@@ -88,7 +85,6 @@
       </a>
     </div>
   </section>
-
 
   <!-- CLAIM FORM SECTION -->
   <section class="py-5" style="background:#f1f5f9;">
@@ -417,7 +413,6 @@
     </div>
   </section>
 
-
   <!-- STATS -->
   <section id="stats" class="py-5" style="background:#0f172a; color:white;">
     <div class="container text-center">
@@ -447,8 +442,6 @@
       </div>
     </div>
   </section>
-
-
 
   <!-- PRACTICE AREAS -->
   <section id="services" class="py-5">
@@ -530,209 +523,188 @@
 
   <script src="./script.js"></script>
 
-  <!-- Optional JavaScript; choose one of the two! -->
-
   <!-- Option 1: Bootstrap Bundle with Popper -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
     crossorigin="anonymous"></script>
 
   <!-- CLAIM FORM MODAL -->
-  <form id="claimForm">
+  <div class="modal fade" id="claimModal" tabindex="-1">
+    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+      <div class="modal-content">
 
-    <div class="mb-4">
-      <label class="form-label fw-semibold">Date of Incident *</label>
-      <input type="date" class="form-control form-control-lg" name="dateIncident" required>
-    </div>
-
-    <div class="mb-4">
-      <label class="form-label fw-semibold">Was the accident your fault? *</label>
-      <select class="form-select form-select-lg" name="fault" required>
-        <option value="">Select...</option>
-        <option value="no">No</option>
-        <option value="yes">Yes</option>
-      </select>
-    </div>
-
-    <div class="row g-4 mb-3">
-      <div class="col-md-6">
-        <label class="form-label fw-semibold">Were you physically injured? *</label>
-        <select class="form-select form-select-lg" name="injured" required>
-          <option value="">Select...</option>
-          <option value="no">No</option>
-          <option value="yes">Yes</option>
-        </select>
-      </div>
-      <div class="col-md-6">
-        <label class="form-label fw-semibold">Did an ambulance come? *</label>
-        <select class="form-select form-select-lg" name="ambulance" required>
-          <option value="">Select...</option>
-          <option value="no">No</option>
-          <option value="yes">Yes</option>
-        </select>
-      </div>
-    </div>
-
-    <div class="mb-4">
-      <label class="form-label fw-semibold">Did you go to the emergency room? *</label>
-      <select class="form-select form-select-lg" name="emergencyRoom" required>
-        <option value="">Select...</option>
-        <option value="no">No</option>
-        <option value="yes">Yes</option>
-      </select>
-    </div>
-
-    <div class="mb-4">
-      <label class="form-label fw-semibold">Types of injuries *</label>
-      <div class="row">
-        <div class="col-md-6">
-          <div class="form-check"><input class="form-check-input" type="checkbox" name="injuries[]" value="Whiplash">
-            Whiplash</div>
-          <div class="form-check"><input class="form-check-input" type="checkbox" name="injuries[]"
-              value="Broken bones"> Broken bones</div>
-          <div class="form-check"><input class="form-check-input" type="checkbox" name="injuries[]" value="Lost limb">
-            Lost limb</div>
+        <div class="modal-header">
+          <h5 class="modal-title fw-bold">Get Your Free Case Review</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
         </div>
-        <div class="col-md-6">
-          <div class="form-check"><input class="form-check-input" type="checkbox" name="injuries[]" value="Spinal cord">
-            Spinal cord injury</div>
-          <div class="form-check"><input class="form-check-input" type="checkbox" name="injuries[]"
-              value="Brain injury"> Brain injury</div>
+
+        <div class="modal-body">
+
+          <form id="modalClaimForm">
+
+            <div class="mb-4">
+              <label class="form-label fw-semibold">Date of Incident *</label>
+              <input type="date" class="form-control form-control-lg" name="dateIncident" required>
+            </div>
+
+            <div class="mb-4">
+              <label class="form-label fw-semibold">Was the accident your fault? *</label>
+              <select class="form-select form-select-lg" name="fault" required>
+                <option value="">Select...</option>
+                <option value="no">No</option>
+                <option value="yes">Yes</option>
+              </select>
+            </div>
+
+            <div class="row g-4 mb-3">
+              <div class="col-md-6">
+                <label class="form-label fw-semibold">Were you physically injured? *</label>
+                <select class="form-select form-select-lg" name="injured" required>
+                  <option value="">Select...</option>
+                  <option value="no">No</option>
+                  <option value="yes">Yes</option>
+                </select>
+              </div>
+
+              <div class="col-md-6">
+                <label class="form-label fw-semibold">Did an ambulance come? *</label>
+                <select class="form-select form-select-lg" name="ambulance" required>
+                  <option value="">Select...</option>
+                  <option value="no">No</option>
+                  <option value="yes">Yes</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="mb-4">
+              <label class="form-label fw-semibold">Did you go to the emergency room? *</label>
+              <select class="form-select form-select-lg" name="emergencyRoom" required>
+                <option value="">Select...</option>
+                <option value="no">No</option>
+                <option value="yes">Yes</option>
+              </select>
+            </div>
+
+            <div class="mb-4">
+              <label class="form-label fw-semibold">Types of injuries *</label>
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-check"><input class="form-check-input" type="checkbox" name="injuries[]"
+                      value="Whiplash"> Whiplash</div>
+                  <div class="form-check"><input class="form-check-input" type="checkbox" name="injuries[]"
+                      value="Broken bones"> Broken bones</div>
+                  <div class="form-check"><input class="form-check-input" type="checkbox" name="injuries[]"
+                      value="Lost limb"> Lost limb</div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-check"><input class="form-check-input" type="checkbox" name="injuries[]"
+                      value="Spinal cord"> Spinal cord injury</div>
+                  <div class="form-check"><input class="form-check-input" type="checkbox" name="injuries[]"
+                      value="Brain injury"> Brain injury</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="mb-4">
+              <label class="form-label fw-semibold">Is an attorney helping you? *</label>
+              <select class="form-select form-select-lg" name="attorneyHelp" required>
+                <option value="">Select...</option>
+                <option value="no">No</option>
+                <option value="yes">Yes</option>
+              </select>
+            </div>
+
+            <div class="mb-4">
+              <label class="form-label fw-semibold">Property damage to your vehicle? *</label>
+              <select class="form-select form-select-lg" name="propertyDamage" required>
+                <option value="">Select...</option>
+                <option value="high">High - Not drivable</option>
+                <option value="moderate">Moderate</option>
+                <option value="minor">Minor</option>
+                <option value="unknown">Don't Know</option>
+              </select>
+            </div>
+
+            <div class="row g-4 mb-4">
+              <div class="col-md-6">
+                <label class="form-label fw-semibold">State of Injury *</label>
+                <select class="form-select form-select-lg" name="state" required>
+                  <option value="">Select...</option>
+                  <!-- All states here -->
+                  <option value="AL">Alabama</option>
+                  <option value="AK">Alaska</option>
+                  <option value="AZ">Arizona</option>
+                  <option value="AR">Arkansas</option>
+                  <option value="CA">California</option>
+                  <!-- ...continue same list ... -->
+                </select>
+              </div>
+
+              <div class="col-md-6">
+                <label class="form-label fw-semibold">City *</label>
+                <input type="text" class="form-control form-control-lg" name="city" required>
+              </div>
+            </div>
+
+            <div class="mb-4">
+              <label class="form-label fw-semibold">Type of other vehicle *</label>
+              <select class="form-select form-select-lg" name="vehicleType" required>
+                <option value="">Select...</option>
+                <option value="personal">Personal</option>
+                <option value="work">Work vehicle</option>
+                <option value="rideshare">Taxi/Rideshare</option>
+                <option value="notSure">Not Sure</option>
+              </select>
+            </div>
+
+            <div class="mb-5">
+              <label class="form-label fw-semibold">Describe your case *</label>
+              <textarea class="form-control form-control-lg" name="caseDescription" rows="4" required></textarea>
+            </div>
+
+            <hr class="my-4">
+
+            <div class="row g-4 mb-4">
+              <div class="col-md-6">
+                <label class="form-label fw-semibold">First Name *</label>
+                <input type="text" class="form-control form-control-lg" name="firstName" required>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label fw-semibold">Last Name *</label>
+                <input type="text" class="form-control form-control-lg" name="lastName" required>
+              </div>
+            </div>
+
+            <div class="mb-4">
+              <label class="form-label fw-semibold">Phone Number *</label>
+              <input type="tel" class="form-control form-control-lg" name="phone" required>
+            </div>
+
+            <div class="mb-4">
+              <label class="form-label fw-semibold">Email *</label>
+              <input type="email" class="form-control form-control-lg" name="email" required>
+            </div>
+
+            <button type="submit" class="btn btn-success btn-lg w-100 fw-bold">
+              Get My Claim Value →
+            </button>
+          </form>
+
         </div>
       </div>
     </div>
+  </div>
 
-    <div class="mb-4">
-      <label class="form-label fw-semibold">Is an attorney helping you? *</label>
-      <select class="form-select form-select-lg" name="attorneyHelp" required>
-        <option value="">Select...</option>
-        <option value="no">No</option>
-        <option value="yes">Yes</option>
-      </select>
-    </div>
-
-    <div class="mb-4">
-      <label class="form-label fw-semibold">Property damage to your vehicle? *</label>
-      <select class="form-select form-select-lg" name="propertyDamage" required>
-        <option value="">Select...</option>
-        <option value="high">High - Not drivable</option>
-        <option value="moderate">Moderate</option>
-        <option value="minor">Minor</option>
-        <option value="unknown">Don't Know</option>
-      </select>
-    </div>
-
-    <div class="row g-4 mb-4">
-      <div class="col-md-6">
-        <label class="form-label fw-semibold">State of Injury *</label>
-        <select class="form-select form-select-lg" name="state" required>
-          <option value="">Select...</option>
-          <option value="AL">Alabama</option>
-          <option value="AK">Alaska</option>
-          <option value="AZ">Arizona</option>
-          <option value="AR">Arkansas</option>
-          <option value="CA">California</option>
-          <option value="CO">Colorado</option>
-          <option value="CT">Connecticut</option>
-          <option value="DE">Delaware</option>
-          <option value="FL">Florida</option>
-          <option value="GA">Georgia</option>
-          <option value="HI">Hawaii</option>
-          <option value="ID">Idaho</option>
-          <option value="IL">Illinois</option>
-          <option value="IN">Indiana</option>
-          <option value="IA">Iowa</option>
-          <option value="KS">Kansas</option>
-          <option value="KY">Kentucky</option>
-          <option value="LA">Louisiana</option>
-          <option value="ME">Maine</option>
-          <option value="MD">Maryland</option>
-          <option value="MA">Massachusetts</option>
-          <option value="MI">Michigan</option>
-          <option value="MN">Minnesota</option>
-          <option value="MS">Mississippi</option>
-          <option value="MO">Missouri</option>
-          <option value="MT">Montana</option>
-          <option value="NE">Nebraska</option>
-          <option value="NV">Nevada</option>
-          <option value="NH">New Hampshire</option>
-          <option value="NJ">New Jersey</option>
-          <option value="NM">New Mexico</option>
-          <option value="NY">New York</option>
-          <option value="NC">North Carolina</option>
-          <option value="ND">North Dakota</option>
-          <option value="OH">Ohio</option>
-          <option value="OK">Oklahoma</option>
-          <option value="OR">Oregon</option>
-          <option value="PA">Pennsylvania</option>
-          <option value="RI">Rhode Island</option>
-          <option value="SC">South Carolina</option>
-          <option value="SD">South Dakota</option>
-          <option value="TN">Tennessee</option>
-          <option value="TX">Texas</option>
-          <option value="UT">Utah</option>
-          <option value="VT">Vermont</option>
-          <option value="VA">Virginia</option>
-          <option value="WA">Washington</option>
-          <option value="WV">West Virginia</option>
-          <option value="WI">Wisconsin</option>
-          <option value="WY">Wyoming</option>
-
-        </select>
+  <!-- success Animation -->
+  <div id="successAnimation">
+    <div class="success-box">
+      <div class="success-circle">
+        <div class="success-check"></div>
       </div>
-      <div class="col-md-6">
-        <label class="form-label fw-semibold">City *</label>
-        <input type="text" class="form-control form-control-lg" name="city" required>
-      </div>
+      <div class="success-message">Submitted!</div>
+      <div class="success-sub">We received your details successfully.</div>
     </div>
-
-    <div class="mb-4">
-      <label class="form-label fw-semibold">Type of other vehicle *</label>
-      <select class="form-select form-select-lg" name="vehicleType" required>
-        <option value="">Select...</option>
-        <option value="personal">Personal</option>
-        <option value="work">Work vehicle</option>
-        <option value="rideshare">Taxi/Rideshare</option>
-        <option value="notSure">Not Sure</option>
-      </select>
-    </div>
-
-    <div class="mb-5">
-      <label class="form-label fw-semibold">Describe your case *</label>
-      <textarea class="form-control form-control-lg" name="caseDescription" rows="4" required></textarea>
-    </div>
-
-    <hr class="my-4">
-
-    <!-- Contact Info -->
-    <div class="row g-4 mb-4">
-      <div class="col-md-6">
-        <label class="form-label fw-semibold">First Name *</label>
-        <input type="text" class="form-control form-control-lg" name="firstName" required>
-      </div>
-      <div class="col-md-6">
-        <label class="form-label fw-semibold">Last Name *</label>
-        <input type="text" class="form-control form-control-lg" name="lastName" required>
-      </div>
-    </div>
-
-    <div class="mb-4">
-      <label class="form-label fw-semibold">Phone Number *</label>
-      <input type="tel" class="form-control form-control-lg" name="phone" required>
-    </div>
-
-    <div class="mb-4">
-      <label class="form-label fw-semibold">Email *</label>
-      <input type="email" class="form-control form-control-lg" name="email" required>
-    </div>
-
-    <button type="submit" class="btn btn-success btn-lg w-100 fw-bold">
-      Get My Claim Value →
-    </button>
-
-  </form>
-
-
+  </div>
 
 </body>
 

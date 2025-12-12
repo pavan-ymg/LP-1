@@ -65,28 +65,14 @@ window.addEventListener('scroll', () => {
 /* -----------------------------------------
    4. Success Animation Modal
 ----------------------------------------- */
-function showSuccessAnimation(form) {
-    const modalHTML = `
-    <div class="success-popup">
-      <div class="success-check">
-        <svg viewBox="0 0 52 52">
-          <circle cx="26" cy="26" r="25"></circle>
-          <path d="M14 27 l7 7 l17 -17"></path>
-        </svg>
-      </div>
-      <h3 class="mt-3">Submitted Successfully!</h3>
-      <p>Our team will reach out to you shortly.</p>
-    </div>
-  `;
+function showSuccessAnimation() {
+    const el = document.getElementById("successAnimation");
+    el.classList.add("active");
 
-    const wrapper = document.createElement("div");
-    wrapper.innerHTML = modalHTML;
-    wrapper.classList.add("success-container");
-
-    form.innerHTML = "";
-    form.appendChild(wrapper);
+    setTimeout(() => {
+        el.classList.remove("active");
+    }, 2200);
 }
-
 
 /* -----------------------------------------
    5. Generic Form Submission Handler
