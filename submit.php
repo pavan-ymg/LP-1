@@ -1,7 +1,7 @@
 <?php
 
 // Your email
-$to = "pavan@ymg-legal.com";
+$to = "intake@ymg-legal.com";
 
 // Email subject — shows which form submitted
 $formName = isset($_POST['formId']) ? $_POST['formId'] : "New Claim Submission";
