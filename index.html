@@ -171,7 +171,7 @@
               <p class="text-secondary">100% Free Case Review — No Cost or Commitment</p>
             </div>
 
-            <form id="claimFormMain">
+            <form id="claimForm">
 
               <!-- Step 1 -->
               <div class="step" id="step1">
@@ -262,19 +262,9 @@
                           value="Brain injury">
                         <label for="injBrain" class="form-check-label">Brain injury</label>
                       </div>
-
-                      <!-- NEW OTHER OPTION -->
-                      <div class="form-check mt-2">
-                        <input id="injOther" class="form-check-input" type="checkbox" name="injuries[]" value="Other">
-                        <label for="injOther" class="form-check-label">Other</label>
-                      </div>
-
-                      <input type="text" id="injOtherText" class="form-control form-control-lg mt-2 d-none"
-                        placeholder="Please specify" name="injuriesOther">
                     </div>
                   </div>
                 </div>
-
 
                 <!-- Already have attorney -->
                 <div class="mb-4">
@@ -572,15 +562,6 @@
     </div>
   </footer>
 
-  <div id="successAnimation" class="success-wrapper d-none">
-    <div class="checkmark-circle">
-      <div class="background"></div>
-      <div class="checkmark draw"></div>
-    </div>
-    <h3 class="text-center mt-3 fw-bold">Submitted Successfully!</h3>
-  </div>
-
-
   <script src="./script.js"></script>
 
   <!-- Optional JavaScript; choose one of the two! -->
@@ -591,7 +572,7 @@
     crossorigin="anonymous"></script>
 
   <!-- CLAIM FORM MODAL -->
-  <div class="modal fade" id="claimFormModal" tabindex="-1">
+  <div class="modal fade" id="claimModal" tabindex="-1">
     <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
       <div class="modal-content">
 
@@ -652,48 +633,20 @@
 
               <div class="mb-4">
                 <label class="form-label fw-semibold">Types of injuries *</label>
-
                 <div class="row">
                   <div class="col-md-6">
-                    <div class="form-check">
-                      <input id="injWhiplash" class="form-check-input" type="checkbox" name="injuries[]"
-                        value="Whiplash">
-                      <label for="injWhiplash" class="form-check-label">Whiplash</label>
-                    </div>
-
-                    <div class="form-check">
-                      <input id="injBones" class="form-check-input" type="checkbox" name="injuries[]"
-                        value="Broken bones">
-                      <label for="injBones" class="form-check-label">Broken bones</label>
-                    </div>
-
-                    <div class="form-check">
-                      <input id="injLimb" class="form-check-input" type="checkbox" name="injuries[]" value="Lost limb">
-                      <label for="injLimb" class="form-check-label">Lost limb</label>
-                    </div>
+                    <div class="form-check"><input class="form-check-input" type="checkbox" name="injuries[]"
+                        value="Whiplash"> Whiplash</div>
+                    <div class="form-check"><input class="form-check-input" type="checkbox" name="injuries[]"
+                        value="Broken bones"> Broken bones</div>
+                    <div class="form-check"><input class="form-check-input" type="checkbox" name="injuries[]"
+                        value="Lost limb"> Lost limb</div>
                   </div>
-
                   <div class="col-md-6">
-                    <div class="form-check">
-                      <input id="injSpine" class="form-check-input" type="checkbox" name="injuries[]"
-                        value="Spinal cord">
-                      <label for="injSpine" class="form-check-label">Spinal cord injury</label>
-                    </div>
-
-                    <div class="form-check">
-                      <input id="injBrain" class="form-check-input" type="checkbox" name="injuries[]"
-                        value="Brain injury">
-                      <label for="injBrain" class="form-check-label">Brain injury</label>
-                    </div>
-
-                    <!-- NEW OTHER OPTION -->
-                    <div class="form-check mt-2">
-                      <input id="injOtherModal" class="form-check-input" type="checkbox" name="injuries[]" value="Other">
-                      <label for="injOtherModal" class="form-check-label">Other</label>
-                    </div>
-
-                    <input type="text" id="injOtherTextModal" class="form-control form-control-lg mt-2 d-none"
-                      placeholder="Please specify" name="injuriesOther">
+                    <div class="form-check"><input class="form-check-input" type="checkbox" name="injuries[]"
+                        value="Spinal cord"> Spinal cord injury</div>
+                    <div class="form-check"><input class="form-check-input" type="checkbox" name="injuries[]"
+                        value="Brain injury"> Brain injury</div>
                   </div>
                 </div>
               </div>
