@@ -21,9 +21,14 @@ foreach ($_POST as $key => $value) {
 
     if ($key == "formId") continue; // skip internal formId flag
 
-    // Convert arrays (checkbox groups)
-    if (is_array($value)) {
-        $value = implode(", ", $value);
+    // Special handling for consent checkbox
+    if ($key == 'consent') {
+        $value = isset($_POST['consent']) ? "Yes" : "No";
+    } else {
+        // Convert arrays (checkbox groups)
+        if (is_array($value)) {
+            $value = implode(", ", $value);
+        }
     }
 
     $key = htmlspecialchars($key);
