@@ -156,26 +156,56 @@ function setupFormSubmission(formId) {
         data.append("entry.1965612719", form.email.value);
 
         // Consent checkbox
-        const consentCheckbox = form.querySelector('#consent');
-        if (consentCheckbox) {
-            data.append("entry.000000001", consentCheckbox.checked ? "Yes" : "No");
-        }
+        // const consentCheckbox = form.querySelector('#consent');
+        // if (consentCheckbox) {
+        //     data.append("entry.000000001", consentCheckbox.checked ? "Yes" : "No");
+        // }
 
         const googleURL = "https://docs.google.com/forms/d/e/1FAIpQLScLGGD6vA1gy17t_Nue4vJUkhisJnmRpvfl3JL-vdxjegsjeQ/formResponse";
 
         try {
-            // Submit to Google Forms
-            await fetch(googleURL, {
-                method: "POST",
-                body: data,
-                mode: "no-cors",
-            });
+            // Preferred: submit using a hidden iframe + form to avoid CORS blocking.
+            // Build a plain HTML form with inputs named exactly as Google expects (entry.xxxxx)
+            const iframeName = 'googleFormSubmitFrame';
+
+            let iframe = document.querySelector(`iframe[name="${iframeName}"]`);
+            if (!iframe) {
+                iframe = document.createElement('iframe');
+                iframe.name = iframeName;
+                iframe.style.display = 'none';
+                document.body.appendChild(iframe);
+            }
+
+            const hiddenForm = document.createElement('form');
+            hiddenForm.action = googleURL;
+            hiddenForm.method = 'POST';
+            hiddenForm.target = iframeName;
+            hiddenForm.style.display = 'none';
+
+            // Transfer FormData entries into hidden inputs
+            for (const pair of data.entries()) {
+                const input = document.createElement('input');
+                input.type = 'hidden';
+                input.name = pair[0];
+                input.value = pair[1];
+                hiddenForm.appendChild(input);
+            }
+
+            document.body.appendChild(hiddenForm);
+
+            // Submit the hidden form — this performs a real browser POST and avoids fetch/no-cors limitations
+            hiddenForm.submit();
+
+            // Clean up the hidden form after a short delay
+            setTimeout(() => {
+                hiddenForm.remove();
+            }, 2000);
 
             // Show success animation
             showSuccessAnimation(form);
 
             // Log for debugging (remove in production)
-            console.log(`Form ${formId} submitted successfully`);
+            console.log(`Form ${formId} submitted via hidden iframe`);
 
         } catch (error) {
             console.error("Google Form Submission Error:", error);
