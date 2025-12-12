@@ -165,7 +165,8 @@ function setupFormSubmission(formId) {
 
         try {
             // Send to server-side relay which will forward to Google Forms (avoids CORS and framing issues)
-            const relayUrl = '/submit.php';
+            // Use a relative path so the request goes to the same folder as the page (avoids hitting the site root)
+            const relayUrl = 'submit.php';
 
             // Build a plain object representation of the FormData so we can log exactly
             // what will be posted to the relay (group duplicate keys into arrays).
