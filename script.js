@@ -164,56 +164,50 @@ function setupFormSubmission(formId) {
         const googleURL = "https://docs.google.com/forms/d/e/1FAIpQLScLGGD6vA1gy17t_Nue4vJUkhisJnmRpvfl3JL-vdxjegsjeQ/formResponse";
 
         try {
-            // Preferred: submit using a hidden iframe + form to avoid CORS blocking.
-            // Build a plain HTML form with inputs named exactly as Google expects (entry.xxxxx)
-            const iframeName = 'googleFormSubmitFrame';
+            // Send to server-side relay which will forward to Google Forms (avoids CORS and framing issues)
+            const relayUrl = '/submit.php';
 
-            let iframe = document.querySelector(`iframe[name="${iframeName}"]`);
-            if (!iframe) {
-                iframe = document.createElement('iframe');
-                iframe.name = iframeName;
-                iframe.style.display = 'none';
-                document.body.appendChild(iframe);
-            }
-
-            const hiddenForm = document.createElement('form');
-            hiddenForm.action = googleURL;
-            hiddenForm.method = 'POST';
-            hiddenForm.target = iframeName;
-            hiddenForm.style.display = 'none';
-
-            // Transfer FormData entries into hidden inputs
+            // Build a plain object representation of the FormData so we can log exactly
+            // what will be posted to the relay (group duplicate keys into arrays).
+            const payload = {};
             for (const pair of data.entries()) {
-                const input = document.createElement('input');
-                input.type = 'hidden';
-                input.name = pair[0];
-                input.value = pair[1];
-                hiddenForm.appendChild(input);
+                const key = pair[0];
+                const val = pair[1];
+                if (Object.prototype.hasOwnProperty.call(payload, key)) {
+                    if (Array.isArray(payload[key])) payload[key].push(val);
+                    else payload[key] = [payload[key], val];
+                } else {
+                    payload[key] = val;
+                }
             }
 
-            document.body.appendChild(hiddenForm);
+            console.log(`Posting to relay ${relayUrl} — formId=${formId}`);
+            console.log('Payload:', payload);
+            try { console.table(payload); } catch (err) { /* ignore */ }
 
-            // Submit the hidden form — this performs a real browser POST and avoids fetch/no-cors limitations
-            hiddenForm.submit();
+            const response = await fetch(relayUrl, {
+                method: 'POST',
+                body: data,
+                credentials: 'same-origin'
+            });
 
-            // Clean up the hidden form after a short delay
-            setTimeout(() => {
-                hiddenForm.remove();
-            }, 2000);
+            let json = null;
+            try { json = await response.json(); } catch (err) { /* ignore */ }
 
-            // Show success animation
-            showSuccessAnimation(form);
-
-            // Log for debugging (remove in production)
-            console.log(`Form ${formId} submitted via hidden iframe`);
+            if (response.ok && json && json.success) {
+                showSuccessAnimation(form);
+                console.log(`Form ${formId} relayed successfully`, json);
+            } else {
+                console.error('Relay submission failed', response.status, json);
+                alert("We're having trouble submitting your form. Please try again in a moment, or call us directly at (424) 447-1147.");
+                submitBtn.innerHTML = originalHTML;
+                submitBtn.disabled = false;
+                return;
+            }
 
         } catch (error) {
-            console.error("Google Form Submission Error:", error);
-            
-            // Show user-friendly error
+            console.error("Relay Submission Error:", error);
             alert("We're having trouble submitting your form. Please try again in a moment, or call us directly at (424) 447-1147.");
-            
-            // Restore button immediately on error
             submitBtn.innerHTML = originalHTML;
             submitBtn.disabled = false;
             return;
