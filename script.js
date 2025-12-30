@@ -163,4 +163,12 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     });
+
+    // Initialize Flatpickr for date inputs
+    flatpickr("#dateIncident", {
+        dateFormat: "F j, Y",
+    });
+    flatpickr("#modalDateIncident", {
+        dateFormat: "F j, Y",
+    });
 });

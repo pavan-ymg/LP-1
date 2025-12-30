@@ -1,7 +1,7 @@
 <?php
 
 // Your email
-$to = "intake@ymg-legal.com";
+$to = "intake@ymg-legal.com"; // WHO receives the email
 
 // Email subject — shows which form submitted
 $formName = isset($_POST['formId']) ? $_POST['formId'] : "New Claim Submission";
@@ -87,6 +87,6 @@ mail($to, $subject, $table, $headers);
 
 
 // Return success
-echo "success";
+echo "success";`
 
 ?>

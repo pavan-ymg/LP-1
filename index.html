@@ -10,6 +10,9 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 
+  <!-- Flatpickr CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+
   <link rel="stylesheet" href="./styles.css">
   <title>
     Get the Accident Compensation You Deserve
@@ -175,7 +178,8 @@
               <!-- Date -->
               <div class="mb-4">
                 <label for="dateIncident" class="form-label fw-semibold">Date of Incident *</label>
-                <input id="dateIncident" type="date" class="form-control form-control-lg" name="dateIncident" required>
+                <input id="dateIncident" type="text" class="form-control form-control-lg" name="dateIncident"
+                  placeholder="MM/DD/YYYY" required style="background-color: white; color: black;">
               </div>
 
               <!-- Fault -->
@@ -548,8 +552,9 @@
             <input type="hidden" name="formId" value="Modal Form">
 
             <div class="mb-4">
-              <label class="form-label fw-semibold">Date of Incident *</label>
-              <input type="date" class="form-control form-control-lg" name="dateIncident" required>
+              <label for="dateIncident" class="form-label fw-semibold">Date of Incident *</label>
+              <input id="dateIncident" type="text" class="form-control form-control-lg" name="dateIncident"
+                placeholder="MM/DD/YYYY" required style="background-color: white; color: black;">
             </div>
 
             <div class="mb-4">
@@ -784,6 +789,8 @@
   <noscript><img src="https://api.trustedform.com/ns.gif"></noscript>
   <!-- END TrustedForm -->
 
+  <!-- Flatpickr JS -->
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 
 </body>
 
